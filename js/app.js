@@ -2,7 +2,9 @@
 
 
 /*---------------------------- Variables (state) ----------------------------*/
-board, turn, winner
+let board
+
+turn, winner
 /*------------------------ Cached Element References ------------------------*/
 const squareEls = document.querySelector(".board > div")
 console.log(squareEls)
@@ -14,4 +16,11 @@ console.log(messageEl)
 
 
 /*-------------------------------- Functions --------------------------------*/
-
+init()
+function init() {
+  board = [null, null, null, null, null, null, null, null, null]
+  console.log(board)
+  turn = 1
+  winner = null
+  render()
+}
