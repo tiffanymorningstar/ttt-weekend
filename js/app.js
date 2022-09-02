@@ -44,6 +44,9 @@ if (winner === 1) {
   } 
   board[sqIdx] = turn
   turn = turn * -1
+
+  winner = getWinner()
+  render()
   }
 
 function render() {
