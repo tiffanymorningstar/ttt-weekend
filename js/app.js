@@ -1,5 +1,11 @@
 /*-------------------------------- Constants --------------------------------*/
 
+const winningCombos = [
+  [0, 1, 2],[3, 4, 5],[6, 7, 8],
+[0, 3, 6],[1, 4, 7],[2, 5, 8],
+[0, 4, 8],[2, 4, 6]
+];
+
 
 /*---------------------------- Variables (state) ----------------------------*/
 let board, turn, winner
@@ -9,9 +15,11 @@ console.log(squareEls)
 
 const messageEl = document.getElementById("message")
 console.log(messageEl)
+
+const boardEl = document.querySelector('.board')
 /*----------------------------- Event Listeners -----------------------------*/
 
-
+boardEl.addEventListener('click', handleClick) 
 
 /*-------------------------------- Functions --------------------------------*/
 init()
@@ -22,6 +30,21 @@ function init() {
   winner = 1
   render()
 }
+
+function handleClick(evt){
+  const sqIdx = parseInt(evt.target.id[2])
+  console.log(sqIdx)
+if (winner === 1) {
+  return
+} else if (winner === 1 || winner === -1) {
+  return 
+}
+  if (board[sqIdx]) {
+    return
+  } 
+  board[sqIdx] = turn
+  turn = turn * -1
+  }
 
 function render() {
   board.forEach(function (square, idx) {
@@ -50,6 +73,7 @@ function render() {
     messageEl.textContent = 'Congrats Player 2, you won!'
 
   }
+
 }
 
 
