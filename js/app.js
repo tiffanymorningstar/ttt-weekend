@@ -1,53 +1,99 @@
 /*-------------------------------- Constants --------------------------------*/
 
 const winningCombos = [
-  [0, 1, 2],[3, 4, 5],[6, 7, 8],
-[0, 3, 6],[1, 4, 7],[2, 5, 8],
-[0, 4, 8],[2, 4, 6]
+  [0, 1, 2], [3, 4, 5], [6, 7, 8],
+  [0, 3, 6], [1, 4, 7], [2, 5, 8],
+  [0, 4, 8], [2, 4, 6]
 ];
 
 
 /*---------------------------- Variables (state) ----------------------------*/
+
 let board, turn, winner
+
+//board is referring to all the squares on the ttt board
+//which turn it is
+//if there is a winner
+//all of these are always changing
+
 /*------------------------ Cached Element References ------------------------*/
 const squareEls = document.querySelectorAll(".board > div")
 console.log(squareEls)
+//Node list of all the squares. Gives you access to the board as a group, as opposed to the squares individually
 
 const messageEl = document.getElementById("message")
 console.log(messageEl)
+//Displays messages for which turn it is, or who has won
 
 const boardEl = document.querySelector('.board')
-/*----------------------------- Event Listeners -----------------------------*/
 
-boardEl.addEventListener('click', handleClick) 
+const resetBtnEl = document.querySelector("#reset-button")
+
+//Everything you put in Cached element references, gives you access to your html
+
+/*----------------------------- Event Listeners -----------------------------*/
+resetBtnEl.addEventListener('click', init)
+
+boardEl.addEventListener('click', handleClick)
 
 /*-------------------------------- Functions --------------------------------*/
 init()
+//initialize the game, always put it for interaction on game
+
 function init() {
   board = [null, null, null, null, null, null, null, null, null]
   console.log(board)
-  turn = 1
-  winner = 1
+  turn = 1 //represents player X
+  winner = null
   render()
 }
+//beginning settings of the game
+//board is all nulls at the start at the game
+//turn is set to 1, that is the first player to take their turn
+//if winner null, no winner at the start of the game
+//renders/update page to starting settings
+//render function does two things
+//runs every time a move is made
+//accessing state variables, 
+//and manipulating the html based on the state variables
 
-function handleClick(evt){
-  const sqIdx = parseInt(evt.target.id[2])
+function handleClick(evt) {
+  console.log(evt.target)
+  let sqIdx = parseInt(evt.target.id[2])
   console.log(sqIdx)
-if (winner === 1) {
-  return
-} else if (winner === 1 || winner === -1) {
-  return 
-}
-  if (board[sqIdx]) {
-    return
-  } 
-  board[sqIdx] = turn
-  turn = turn * -1
+  if (isNaN(sqIdx)) {
 
+    return 
+  }
+  if (winner) {
+    return
+  }
+  if (board[sqIdx]) {
+    return 
+  }
+  board[sqIdx] = turn 
+
+  turn = turn * -1 
   winner = getWinner()
   render()
+}
+
+function getWinner() {
+  let bestCombo = []
+  winningCombos.forEach(function (combo) {
+    let comboValue = board[combo[0]]+ board [combo[1]] + board[combo[2]]
+    bestCombo.push(Math.abs(comboValue))
+  })
+let winnersCombo = bestCombo.some(function(value){
+  return value === 3
+})
+  if (winnersCombo === true) {
+    return turn * -1
+  } else if (!board.some((value)=> value === null)){
+    return 'T'
   }
+  return null
+}
 
 function render() {
   board.forEach(function (square, idx) {
@@ -60,6 +106,10 @@ function render() {
 
     }
   });
+//Here, the state variable board is accessed, determining where to place an x or o, or leave it blank, value stored in board, render grabs the data to put in the correspoding html
+//Checks each square to see if it is null or has a value, if it has a value it updates appropriate X, O.  
+//Checks against array for status, updates square via squareEls
+//Ripple effect, changes to squareEls updates the board, so it is correct for the next check
 
   if (winner === null) {
     if (turn === 1) {
@@ -67,6 +117,9 @@ function render() {
     } else {
       messageEl.textContent = "It is player 2's turn"
     }
+    //After we render, we check if the game is still going on
+    //
+
 
   } else if (winner === 'T') {
     messageEl.textContent = 'It is a tie'
@@ -74,9 +127,7 @@ function render() {
     messageEl.textContent = 'Congrats Player 1, you won!'
   } else if (winner === -1) {
     messageEl.textContent = 'Congrats Player 2, you won!'
-
   }
-
 }
 
 
