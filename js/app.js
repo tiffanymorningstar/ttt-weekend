@@ -91,14 +91,22 @@ function handleClick(evt) {
 //If stopped and we have a winner, we stop/leave
 // If we click on a space with something in it, we need to not do anything
 //If we click on a valid square, we continue with handle click function.  We set that index equal to turn.  
+//after board state is set for square, we can go to the next player
+//Just multiply by -1 to go to next player
+//Then we set the winner.  
+//Then get winnder function, see below.
 
 
 function getWinner() {
   let bestCombo = []
   winningCombos.forEach(function (combo) {
     let comboValue = board[combo[0]]+ board [combo[1]] + board[combo[2]]
+    //Adding up square positions, to use below to see if it equals three and there s a winner
     bestCombo.push(Math.abs(comboValue))
   })
+  //Why did we use Math.abs?
+//Using index to get a combo
+
 let winnersCombo = bestCombo.some(function(value){
   return value === 3
 })
@@ -109,6 +117,16 @@ let winnersCombo = bestCombo.some(function(value){
   }
   return null
 }
+//Checks if there is a winner, if so truthy value.  If not, the game is still ongoing, so winner will be equal to null.
+//Then render, then goes through the board.
+//Each time render function is called, html is changing.
+//Check after every move to see if there is a winner
+//winningCombos (an array of an array), looping through tuntil they get a combo of 3, which is a winner
+//Each loop is a different inner array.
+//We want to add the total value the combinations have in the state board variable to see if it is a winner.  It's only a winner if the wining combination totals three. 
+// Compares to boards 
+
+
 
 function render() {
   board.forEach(function (square, idx) {
