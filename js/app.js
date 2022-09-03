@@ -33,8 +33,13 @@ const resetBtnEl = document.querySelector("#reset-button")
 
 /*----------------------------- Event Listeners -----------------------------*/
 resetBtnEl.addEventListener('click', init)
+//When reset button is clicked, init is invoked, and we are brought back to original state.
+
+//Bubbling -We can add an event listener to a top level object, and it can access the individual elements that are nested in the parent element.  Example: 
 
 boardEl.addEventListener('click', handleClick)
+//Event listenser has to be set to boardEls, not squareEls, since squareEls are a node list, squareEls are added in html, not JS.  
+//When someone clicks on the board, then handClick is called.
 
 /*-------------------------------- Functions --------------------------------*/
 init()
@@ -61,10 +66,14 @@ function handleClick(evt) {
   console.log(evt.target)
   let sqIdx = parseInt(evt.target.id[2])
   console.log(sqIdx)
+//When we click, we want to grab the idx of whatever square we click
+//We then grab each of the div ids, they contain the index.
+//Grab the id, then we manipilate it from string to a number
   if (isNaN(sqIdx)) {
-
     return 
   }
+// Then we assign it to square index, the index that corresponds to both square we click on, as well as the position in the state board variable.  
+
   if (winner) {
     return
   }
@@ -77,6 +86,12 @@ function handleClick(evt) {
   winner = getWinner()
   render()
 }
+//After we grab that index, we add functionality.
+//We check if the still going.
+//If stopped and we have a winner, we stop/leave
+// If we click on a space with something in it, we need to not do anything
+//If we click on a valid square, we continue with handle click function.  We set that index equal to turn.  
+
 
 function getWinner() {
   let bestCombo = []
@@ -118,7 +133,10 @@ function render() {
       messageEl.textContent = "It is player 2's turn"
     }
     //After we render, we check if the game is still going on
-    //
+    //Check if winner has been set
+    //check whose turn it is, & display.
+    //If finished just display who won
+
 
 
   } else if (winner === 'T') {
